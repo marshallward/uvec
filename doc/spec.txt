@@ -1,0 +1,198 @@
+Think of this as a generic ``ndarray`` in C for use in multiple languages.
+
+ndarray structure
+=================
+
+ndarraytypes.h
+
+``PyArrayObject``
+
+   This is a minimal types that obscures the actual content.
+
+   .. code:: c
+
+      typedef struct tagPyArrayObject {
+          PyObject_HEAD
+      } PyArrayObject;
+
+   To access the contents, recast to a ``PyArrayObject_fields`` type.
+
+   .. code:: c
+
+      typedef struct tagPyArrayObject_fields {
+         PyObject_HEAD
+
+         char *data;             // Pointer to raw data
+         int nd;                 // Number of dimensions
+         npy_intp *dimensions;   // vector of dim sizes (aka "shape")
+         npy_intp *strides;      // Vector of displacements on each dim
+         PyObject *base;         // TODO!
+         PyArray_Descr *descr;   // Type structure
+         int flags;              // TODO!
+         PyObject *weakreflist;  // TODO!
+
+      } PyArrayObject_fields;
+
+   Recast a ``PyArrayObject`` to access these fields.
+
+   .. code:: c
+
+      PyArrayObject arr;
+      int nd = (PyArrayObject_fields *) arr -> nd;
+
+   Flags are as follows:
+
+   .. code:: c
+
+      #define NPY_ARRAY_C_CONTIGUOUS    0x0001     // "Row major"
+      #define NPY_ARRAY_F_CONTIGUOUS    0x0002     // "Column major"
+      #define NPY_ARRAY_OWNDATA         0x0004     // Not view or shallow copy
+
+      #define NPY_ARRAY_FORCECAST       0x0010
+      #define NPY_ARRAY_ENSURECOPY      0x0020
+      #define NPY_ARRAY_ENSUREARRAY     0x0040
+      #define NPY_ARRAY_ELEMENTSTRIDES  0x0080
+
+      #define NPY_ARRAY_ALIGNED         0x0100     // Aligned to type
+      #define NPY_ARRAY_NOTSWAPPED      0x0200     // Native endianness
+      #define NPY_ARRAY_WRITEABLE       0x0400
+      //
+      #define NPY_ARRAY_UPDATEIFCOPY    0x1000
+
+      // An internal flag set in multiarray/arrayobject.h
+      #define NPY_ARRAY_WARN_ON_WRITE   0x8000
+
+``PyArray_Descr``
+
+   More data contained in ``descr``:
+
+   .. code:: c
+
+      typedef struct _PyArray_Descr {
+          PyObject_HEAD
+
+          PyTypeObject typeobj;  // TODO!
+          char kind;             // ???
+          char type;             // NPY_TYPECHAR
+          char byteorder;        // Endianness (>, <, |, =)
+          char flags;            // 8-bit-packed flags?
+
+          int type_num;          // "Number representing this type"?
+          int elsize;            // Element size
+          int alignment;         // "Alignment" (memory?)
+
+          struct _arr_descr *subarray;    // No idea
+          PyObject *fields;               // Fields dict for type?
+          PyObject *names;                // Ordered tuple of field names?
+
+          PyArray_ArrFuncs;
+          PyObject *metadata;
+          NpyAuxData *c_metadata;
+          npy_hash_t hash;
+
+      } PyArray_Descr;
+
+   Test
+
+
+ndarray attributes
+==================
+
+getset.c:
+
+- ndim
+- flags
+- shape
+- strides
+- data
+- itemsize
+- size
+- nbytes
+- base
+- dtype
+- real
+- imag
+- flat
+- ctypes
+- T
+- __array_interface__
+- __array_struct__
+- __array_priority__
+- __array_finalize__
+
+
+methods.c:
+
+- Subtypes
+  - __array__
+  - __array_prepare__
+  - __array_wrap__
+
+- Sys
+  - __sizeof__
+
+- Copy
+  - __copy__
+  - __deepcopy__
+
+- Pickling
+  - __reduce__
+  - __setstate__
+  - dumps
+  - dump
+
+- original and extended methods (2005)
+  - all
+  - any
+  - argmax
+  - argmin
+  - argpartition
+  - argsort
+  - astype
+  - byteswap
+  - choose
+  - clip
+  - compress
+  - conj
+  - conjugate
+  - copy
+  - cumprod
+  - cumsum
+  - diagonal
+  - dot
+  - fill
+  - flatten
+  - getfield
+  - item
+  - itemset
+  - max
+  - mean
+  - min
+  - newbyteorder
+  - nonzero
+  - partition
+  - prod
+  - ptp
+  - put
+  - ravel
+  - repeat
+  - reshape
+  - resize
+  - round
+  - searchsorted
+  - setfield
+  - setflags
+  - sort
+  - squeeze
+  - std
+  - sum
+  - swapaxes
+  - take
+  - tobytes
+  - tofile
+  - tolist
+  - tostring
+  - trace
+  - transpose
+  - var
+  - view
