@@ -1,6 +1,8 @@
 #ifndef _UVEC_H_
 #define _UVEC_H_
 
+#include <stddef.h>     /* size_t */
+
 typedef struct _UVec {
     char *data;
     int ndims;
@@ -10,7 +12,7 @@ typedef struct _UVec {
 
 /* UVec API */
 
-int UVec_create(UVec *v, int *dims, int *strides);
-int UVec_free(UVec *v);
+int uv_create(UVec *v, size_t dsize, int ndims, int *dims);
+int uv_free(UVec *v);
 
 #endif /* _UVEC_H_ */
