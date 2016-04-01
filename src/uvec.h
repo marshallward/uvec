@@ -15,7 +15,7 @@ typedef struct _UVec {
     char *data;
 } UVec;
 
-/* Dummy testing function */
+/* Dummy testing type */
 union utype {
     int i;
     float f;
@@ -23,7 +23,8 @@ union utype {
 
 /* UVec API */
 
-int uv_create(UVec *v, size_t itemsize, int ndims, int *dims);
+UVec * uv_create(size_t itemsize, int ndims, int *dims);
 int uv_assign(UVec *v, union utype c);
+int uv_add(UVec *t, UVec *u, UVec *v);
 
 #endif /* _UVEC_H_ */

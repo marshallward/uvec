@@ -1,9 +1,11 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "uvec.h"
 
 int main(int argc, char **argv)
 {
-    UVec *v;
+    UVec *v, *w;
     int ndims = 2;
     int dims[] = {3, 2};
     int i, rc;
@@ -11,11 +13,17 @@ int main(int argc, char **argv)
     union utype c;
     c.i = 42;
 
-    rc = uv_create(v, sizeof(int), ndims, dims);
-    rc = uv_assign(v, c);
+    v = uv_create(sizeof(int), ndims, dims);
+    uv_assign(v, c);
 
     for (i = 0; i < v->nbytes; i += v->itemsize)
         printf("(%i): %i\n", i, *(int *)(v->data + i));
+
+    w = uv_create(sizeof(int), ndims, dims);
+    uv_add(w, v, v);
+
+    for (i = 0; i < w->nbytes; i += w->itemsize)
+        printf("(%i): %i\n", i, *(int *)(w->data + i));
 
     return rc;
 }
