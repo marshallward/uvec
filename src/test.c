@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv)
 {
-    UVec *v, *w;
+    uvec *v, *w;
     int ndims = 2;
     int dims[] = {3, 2};
     int i, rc;

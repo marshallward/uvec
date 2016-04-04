@@ -4,13 +4,12 @@
 
 #include "uvec.h"
 
-UVec * uv_create(size_t itemsize, int ndims, int *dims)
+uvec * uv_create(size_t itemsize, int ndims, int *dims)
 {
-    UVec *v;
+    uvec *v;
     int i, size;
 
-    /* TODO: Contiguous struct content (header?) */
-    v = malloc(sizeof(UVec));
+    v = malloc(sizeof(uvec));
 
     size = 1;
     for (i = 0; i < ndims; i++)
@@ -44,7 +43,7 @@ UVec * uv_create(size_t itemsize, int ndims, int *dims)
 }
 
 
-int uv_add(UVec *t, UVec *u, UVec *v)
+int uv_add(uvec *t, uvec *u, uvec *v)
 {
     int i;
 
@@ -63,7 +62,8 @@ int uv_add(UVec *t, UVec *u, UVec *v)
 
 
 /* XXX: Temporary assignment function */
-int uv_assign(UVec *v, union utype c)
+/* PS: unions are dumb */
+int uv_assign(uvec *v, union utype c)
 {
     int b;
     for (b = 0; b < v->nbytes; b += v->itemsize)
