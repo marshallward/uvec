@@ -48,9 +48,17 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
         v->dims[i] = dims[i];
 
     /* Method assignment */
-    /* TODO: point to type-specific and platform-specific method */
-    v->add = uv_add_int;
-    v->sum = uv_sum_int;
+    /* TODO: Pre-calculated hash tables */
+    switch(dtype) {
+        case UV_INT:
+            v->add = uv_add_int;
+            v->sum = uv_sum_int;
+            break;
+        default:
+            /* TODO */
+            v->add = uv_add_int;
+            v->sum = uv_sum_int;
+    }
 
     /* XXX: Temporary explicit stride settings */
 
