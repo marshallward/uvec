@@ -36,5 +36,6 @@ union utype {
 uvec * uv_create(uv_type dtype, int ndims, int *dims);
 int uv_assign(uvec *v, union utype c);
 int uv_add_int(uvec *t, uvec *u, uvec *v);
+int uv_sum_int(uvec *v);
 
 #endif /* _UVEC_H_ */

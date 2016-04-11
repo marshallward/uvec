@@ -50,6 +50,7 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
     /* Method assignment */
     /* TODO: point to type-specific and platform-specific method */
     v->add = uv_add_int;
+    v->sum = uv_sum_int;
 
     /* XXX: Temporary explicit stride settings */
 
@@ -79,11 +80,25 @@ int uv_add_int(uvec *t, uvec *u, uvec *v)
     uu = (int *)u->data;
     vv = (int *)v->data;
 
-    for (i = 0; i < v->size; i++) {
+    for (i = 0; i < v->size; i++)
         tt[i] = uu[i] + vv[i];
-    }
 
     return 0;
+}
+
+
+int uv_sum_int(uvec *v)
+{
+    int i, sum;
+    int *vv;
+
+    vv = (int *)v->data;
+
+    sum = 0;
+    for (i = 0; i < v->size; i++)
+        sum += vv[i];
+
+    return sum;
 }
 
 

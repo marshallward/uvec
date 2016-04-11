@@ -25,5 +25,7 @@ int main(int argc, char **argv)
     for (i = 0; i < w->nbytes; i += w->itemsize)
         printf("(%i): %i\n", i, *(int *)(w->data + i));
 
+    printf("Sum: %i\n", v->sum(v));
+
     return rc;
 }
