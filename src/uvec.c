@@ -19,6 +19,7 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
         size *= dims[i];
 
     /* TODO: Pre-calculate item sizes, save to uv_tsize */
+    v->dtype = dtype;
     switch(dtype) {
         case UV_CHAR:
             itemsize = sizeof(char);

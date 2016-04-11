@@ -18,7 +18,7 @@ $(OBJ)/uvec.o: $(SRC)/uvec.c $(INC)/uvec.h $(INC)/types.h
 
 .PHONY: clean test
 test:
-	$(CC) -I$(INC) -L$(LIB) test/test.c -luvec
+	$(CC) -I$(INC) -L$(LIB) test/check_uvec.c -luvec -lcheck
 
 clean:
 	rm -rf $(LIB)/libuvec.a $(OBJ)/uvec.o
