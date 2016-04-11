@@ -2,21 +2,7 @@
 #define _UVEC_H_
 
 #include <stddef.h>     /* size_t */
-
-/* uvec dtypes (cut and pasted from NumPy) */
-/* TODO: Unsigned types */
-typedef enum _uv_type {
-    UV_BOOL = 0,
-    UV_BYTE,
-    UV_SHORT,
-    UV_INT,
-    UV_LONG,
-    UV_LONGLONG,
-    UV_FLOAT,
-    UV_DOUBLE,
-    UV_LONGDOUBLE
-} uv_type;
-
+#include "types.h"      /* uv_type */
 
 typedef struct _uvec {
     int size;
@@ -31,12 +17,14 @@ typedef struct _uvec {
 
     /* Methods */
     int (*add)();
+    int (*sum)();
 
     char *data;
 } uvec;
 
 
 /* Dummy testing type */
+/* TODO: Remove, replace with pointer */
 union utype {
     int i;
     float f;
@@ -45,7 +33,7 @@ union utype {
 
 /* uvec API */
 
-uvec * uv_create(size_t itemsize, int ndims, int *dims);
+uvec * uv_create(uv_type dtype, int ndims, int *dims);
 int uv_assign(uvec *v, union utype c);
 int uv_add_int(uvec *t, uvec *u, uvec *v);
 

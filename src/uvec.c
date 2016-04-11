@@ -4,16 +4,38 @@
 
 #include "uvec.h"
 
-uvec * uv_create(size_t itemsize, int ndims, int *dims)
+uvec * uv_create(uv_type dtype, int ndims, int *dims)
 {
     uvec *v;
-    int i, size;
+    int size;
+    size_t itemsize;
+
+    int i;
 
     v = malloc(sizeof(uvec));
 
     size = 1;
     for (i = 0; i < ndims; i++)
         size *= dims[i];
+
+    /* TODO: Pre-calculate item sizes, save to uv_tsize */
+    switch(dtype) {
+        case UV_CHAR:
+            itemsize = sizeof(char);
+            break;
+        case UV_INT:
+            itemsize = sizeof(int);
+            break;
+        case UV_FLOAT:
+            itemsize = sizeof(float);
+            break;
+        case UV_DOUBLE:
+            itemsize = sizeof(double);
+            break;
+        default:
+            /* TODO */
+            itemsize = sizeof(char);
+    }
 
     v->size = size;
     v->itemsize = itemsize;
