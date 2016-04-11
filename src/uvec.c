@@ -19,7 +19,6 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
         size *= dims[i];
 
     /* TODO: Pre-calculate item sizes, save to uv_tsize */
-    v->dtype = dtype;
     switch(dtype) {
         case UV_CHAR:
             itemsize = sizeof(char);
@@ -38,6 +37,7 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
             itemsize = sizeof(char);
     }
 
+    v->dtype = dtype;
     v->size = size;
     v->itemsize = itemsize;
     v->nbytes = (size_t) size * itemsize;
@@ -76,6 +76,15 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
     //     v->strides[i] = v->strides[i - 1] * dims[i - 1];
 
     return v;
+}
+
+
+void uv_free(uvec *v)
+{
+    free(v->data);
+    free(v->dims);
+    free(v->strides);
+    free(v);
 }
 
 

@@ -34,8 +34,11 @@ union utype {
 /* uvec API */
 
 uvec * uv_create(uv_type dtype, int ndims, int *dims);
-int uv_assign(uvec *v, union utype c);
+void uv_free(uvec *v);
+
 int uv_add_int(uvec *t, uvec *u, uvec *v);
 int uv_sum_int(uvec *v);
+
+int uv_assign(uvec *v, union utype c);
 
 #endif /* _UVEC_H_ */
