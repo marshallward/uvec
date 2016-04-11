@@ -29,6 +29,9 @@ typedef struct _uvec {
 
     uv_type dtype;
 
+    /* Methods */
+    int (*add)();
+
     char *data;
 } uvec;
 
@@ -44,6 +47,6 @@ union utype {
 
 uvec * uv_create(size_t itemsize, int ndims, int *dims);
 int uv_assign(uvec *v, union utype c);
-int uv_add(uvec *t, uvec *u, uvec *v);
+int uv_add_int(uvec *t, uvec *u, uvec *v);
 
 #endif /* _UVEC_H_ */

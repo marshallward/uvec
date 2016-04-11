@@ -20,7 +20,7 @@ int main(int argc, char **argv)
         printf("(%i): %i\n", i, *(int *)(v->data + i));
 
     w = uv_create(sizeof(int), ndims, dims);
-    uv_add(w, v, v);
+    v->add(w, v, v);
 
     for (i = 0; i < w->nbytes; i += w->itemsize)
         printf("(%i): %i\n", i, *(int *)(w->data + i));

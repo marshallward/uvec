@@ -25,6 +25,10 @@ uvec * uv_create(size_t itemsize, int ndims, int *dims)
     for (i = 0; i < ndims; i++)
         v->dims[i] = dims[i];
 
+    /* Method assignment */
+    /* TODO: point to type-specific and platform-specific method */
+    v->add = uv_add_int;
+
     /* XXX: Temporary explicit stride settings */
 
     /* Row-major (C-ordered) strides */
@@ -43,7 +47,7 @@ uvec * uv_create(size_t itemsize, int ndims, int *dims)
 }
 
 
-int uv_add(uvec *t, uvec *u, uvec *v)
+int uv_add_int(uvec *t, uvec *u, uvec *v)
 {
     int i;
 
