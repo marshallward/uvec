@@ -1,3 +1,4 @@
 language: c
 before_install:
     - sudo apt-get install check
+    - export CPATH=/usr/include:$CPATH
