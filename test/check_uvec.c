@@ -19,6 +19,8 @@ START_TEST(test_uv_create)
     for(i = 0; i < 3; i++)
         ck_assert_int_eq(v->dims[i], dims[i]);
 
+    // XXX: Re-enable after getting latest libcheck on Travis
+
     //ck_assert_ptr_eq(v->add, uv_add_int);
     //ck_assert_ptr_eq(v->sum, uv_sum_int);
 

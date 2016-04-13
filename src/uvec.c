@@ -12,30 +12,35 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
 
     int i;
 
+    /* Datatype lookup tables */
+    /* TODO: Define externally? */
+
+    static size_t dtypesize[UV_NTYPES] = {
+        sizeof(char),               /* UV_CHAR */
+        sizeof(signed char),        /* UV_SCHAR */
+        sizeof(unsigned char),      /* UV_UCHAR */
+        sizeof(short),              /* UV_SHORT */
+        sizeof(unsigned short),     /* UV_USHORT */
+        sizeof(int),                /* UV_INT */
+        sizeof(unsigned int),       /* UV_UINT */
+        sizeof(long),               /* UV_LONG */
+        sizeof(unsigned long),      /* UV_ULONG */
+        sizeof(long long),          /* UV_LONGLONG */
+        sizeof(unsigned long long), /* UV_ULONGLONG */
+        sizeof(float),              /* UV_FLOAT */
+        sizeof(double),             /* UV_DOUBLE */
+        sizeof(long double)         /* UV_LONGDOUBLE */
+    };
+
+    /* Object fields */
+
     v = malloc(sizeof(uvec));
 
     size = 1;
     for (i = 0; i < ndims; i++)
         size *= dims[i];
 
-    /* TODO: Pre-calculate item sizes, save to uv_tsize */
-    switch(dtype) {
-        case UV_CHAR:
-            itemsize = sizeof(char);
-            break;
-        case UV_INT:
-            itemsize = sizeof(int);
-            break;
-        case UV_FLOAT:
-            itemsize = sizeof(float);
-            break;
-        case UV_DOUBLE:
-            itemsize = sizeof(double);
-            break;
-        default:
-            /* TODO */
-            itemsize = sizeof(char);
-    }
+    itemsize = dtypesize[dtype];
 
     v->dtype = dtype;
     v->size = size;
