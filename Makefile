@@ -1,4 +1,5 @@
 CC=gcc
+CFLAGS=-g
 
 # Doofy
 LIB=lib
@@ -14,11 +15,11 @@ $(LIB)/libuvec.a: $(OBJ)/uvec.o
 
 $(OBJ)/uvec.o: $(SRC)/uvec.c $(INC)/uvec.h $(INC)/types.h
 	mkdir -p $(OBJ)
-	$(CC) -I$(INC) -o $@ -c $<
+	$(CC) $(CFLAGS) -I$(INC) -o $@ -c $<
 
 .PHONY: clean test
 test:
-	$(CC) -I$(INC) -L$(LIB) test/check_uvec.c -luvec -lcheck
+	$(CC) $(CFLAGS) -I$(INC) -L$(LIB) test/check_uvec.c -luvec -lcheck
 
 clean:
 	rm -rf $(LIB)/libuvec.a $(OBJ)/uvec.o

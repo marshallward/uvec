@@ -31,6 +31,46 @@ START_TEST(test_uv_create)
 END_TEST
 
 
+START_TEST(test_uv_add)
+{
+    uvec **v;
+    int dims[] = {2, 3};
+    int *vdata;
+
+    int i, j, k;
+
+    v = malloc(sizeof(uvec) * 3);
+    for (k = 0; k < 3; k++)
+        v[k] = uv_create(UV_INT, 2, dims);
+
+    /* TODO: find a better way to set values */
+    for (k = 1; k < 3; k++) {
+        vdata = (int *)v[k]->data;
+        for (i = 0; i < 2; i++) {
+            for (j = 0; j < 3; j++) {
+                vdata[3*i + j] = 3*i + j;
+            }
+        }
+    }
+
+    v[0]->add(v[0], v[1], v[2]);
+
+    /* Explicitly check values */
+    vdata = (int *)v[0]->data;
+    ck_assert_int_eq(vdata[0], 0);
+    ck_assert_int_eq(vdata[1], 2);
+    ck_assert_int_eq(vdata[2], 4);
+    ck_assert_int_eq(vdata[3], 6);
+    ck_assert_int_eq(vdata[4], 8);
+    ck_assert_int_eq(vdata[5], 10);
+
+    for (i = 0; i < 3; i++)
+        uv_free(v[i]);
+    free(v);
+}
+END_TEST
+
+
 START_TEST(test_uv_sum)
 {
     uvec *v;
@@ -58,6 +98,7 @@ Suite * uvec_suite(void)
     tc_core = tcase_create("Core");
 
     tcase_add_test(tc_core, test_uv_create);
+    tcase_add_test(tc_core, test_uv_add);
     tcase_add_test(tc_core, test_uv_sum);
     suite_add_tcase(s, tc_core);
 

@@ -32,6 +32,42 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
         sizeof(long double)         /* UV_LONGDOUBLE */
     };
 
+    static int (*uv_add_funcs[UV_NTYPES])(uvec *t, uvec *u, uvec *v) = {
+        NULL, /* UV_CHAR */
+        NULL, /* UV_SCHAR */
+        NULL, /* UV_UCHAR */
+        NULL, /* UV_SHORT */
+        NULL, /* UV_USHORT */
+        uv_add_int, /* UV_INT */
+        NULL, /* UV_UINT */
+        NULL, /* UV_LONG */
+        NULL, /* UV_ULONG */
+        NULL, /* UV_LONGLONG */
+        NULL, /* UV_ULONGLONG */
+        NULL, /* UV_FLOAT */
+        NULL, /* UV_DOUBLE */
+        NULL, /* UV_LONGDOUBLE */
+    };
+
+    /* TODO: They can't all return `int`... */
+    /*       But sum needs to support vector output anyway */
+    static int (*uv_sum_funcs[UV_NTYPES])(uvec *u) = {
+        NULL, /* UV_CHAR */
+        NULL, /* UV_SCHAR */
+        NULL, /* UV_UCHAR */
+        NULL, /* UV_SHORT */
+        NULL, /* UV_USHORT */
+        uv_sum_int, /* UV_INT */
+        NULL, /* UV_UINT */
+        NULL, /* UV_LONG */
+        NULL, /* UV_ULONG */
+        NULL, /* UV_LONGLONG */
+        NULL, /* UV_ULONGLONG */
+        NULL, /* UV_FLOAT */
+        NULL, /* UV_DOUBLE */
+        NULL, /* UV_LONGDOUBLE */
+    };
+
     /* Object fields */
 
     v = malloc(sizeof(uvec));
@@ -55,16 +91,8 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
 
     /* Method assignment */
     /* TODO: Pre-calculated hash tables */
-    switch(dtype) {
-        case UV_INT:
-            v->add = uv_add_int;
-            v->sum = uv_sum_int;
-            break;
-        default:
-            /* TODO */
-            v->add = uv_add_int;
-            v->sum = uv_sum_int;
-    }
+    v->add = uv_add_funcs[dtype];
+    v->sum = uv_sum_funcs[dtype];
 
     /* XXX: Temporary explicit stride settings */
 
@@ -87,8 +115,8 @@ uvec * uv_create(uv_type dtype, int ndims, int *dims)
 void uv_free(uvec *v)
 {
     free(v->data);
-    free(v->dims);
     free(v->strides);
+    free(v->dims);
     free(v);
 }
 
