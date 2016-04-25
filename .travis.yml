@@ -5,6 +5,8 @@ before_install:
     - cd check-0.10.0
     - ./configure
     - make
-    - export CPATH=$(pwd)/src:$CPATH
-    - export LD_LIBRARY_PATH=$(pwd)/src/.libs:$LD_LIBRARY_PATH
+    - sudo make install
+    #- export CPATH=$(pwd)/src:$CPATH
+    #- export LD_LIBRARY_PATH=$(pwd)/src/.libs:$LD_LIBRARY_PATH
+    - export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
     - cd ..
