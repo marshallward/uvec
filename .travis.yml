@@ -7,5 +7,4 @@ before_install:
     - ./configure
     - make
     - sudo make install
-    # Apt does not have latest version, which cannot check pointers
-    #- sudo apt-get install check
+    - cd ..
