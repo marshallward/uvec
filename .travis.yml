@@ -5,5 +5,6 @@ before_install:
     - cd check-0.10.0
     - ./configure
     - make
-    - export LD_LIBRARY_PATH=$(pwd)/check-0.10.0/src/.libs:$LD_LIBRARY_PATH
+    - export CPATH=$(pwd)/src:$CPATH
+    - export LD_LIBRARY_PATH=$(pwd)/src/.libs:$LD_LIBRARY_PATH
     - cd ..
