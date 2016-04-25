@@ -1,3 +1,10 @@
 language: c
+sudo: True
 before_install:
-    - sudo apt-get install check
+    - wget https://github.com/libcheck/check/files/71408/check-0.10.0.tar.gz
+    - tar -xvf check-0.10.0.tar.gz
+    - ./configure
+    - make
+    - sudo make install
+    # Apt does not have latest version, which cannot check pointers
+    #- sudo apt-get install check
