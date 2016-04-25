@@ -21,8 +21,8 @@ START_TEST(test_uv_create)
 
     // XXX: Re-enable after getting latest libcheck on Travis
 
-    //ck_assert_ptr_eq(v->add, uv_add_int);
-    //ck_assert_ptr_eq(v->sum, uv_sum_int);
+    ck_assert_ptr_eq(v->add, uv_add_int);
+    ck_assert_ptr_eq(v->sum, uv_sum_int);
 
     /* TODO strides */
 
