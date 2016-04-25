@@ -3,6 +3,7 @@ sudo: True
 before_install:
     - wget https://github.com/libcheck/check/files/71408/check-0.10.0.tar.gz
     - tar -xvf check-0.10.0.tar.gz
+    - cd check-0.10.0
     - ./configure
     - make
     - sudo make install
